@@ -3,11 +3,9 @@ package JoseMerino_20240330.JoseMerino_20240330.Controller;
 import JoseMerino_20240330.JoseMerino_20240330.Model.DTO.DTOAutores;
 import JoseMerino_20240330.JoseMerino_20240330.Service.AutoresService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Map;
@@ -24,15 +22,47 @@ public class ControllerAutores {
         return service.obtenerAutores();
     }
 
-    @PostMapping("/postAutores")
-    public ResponseEntity<?> insertarAutor(){
+    @PostMapping("/postAutor")
+    public ResponseEntity<Map<String, Object>> insertarAutor(@RequestBody DTOAutores autor){
         try {
-            return ResponseEntity.ok(Map.of(
-                    "status", "",
-                    "message", "El autor se inserto correctamente"
+            DTOAutores response = service.insertarAutor(autor);
+            if(response == null){
+                return ResponseEntity.badRequest().body(Map.of(
+                        "status", "Inserccion incorrecta",
+                        "message", "Datos del usuario no valido"
+                ));
+            }
+            return ResponseEntity.status(HttpStatus.CREATED).body(Map.of(
+                    "status", "succes",
+                    "data", response
             ));
         } catch (Exception e) {
-            return ResponseEntity.internalServerError().body("No se pudo insertar el autor");
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(Map.of(
+                    "status", "Error",
+                    "message", "Error al registrar autor"
+            ));
+        }
+    }
+
+    @PutMapping("/putAutor/${id}")
+    public ResponseEntity<Map<String, Object>> actualizarAutor(@RequestBody DTOAutores autor, @RequestParam Long id){
+        try {
+            DTOAutores response = service.actualizarAutor(id, autor);
+            if(response == null){
+                return ResponseEntity.badRequest().body(Map.of(
+                        "status", "Actualizacion incorrecta",
+                        "message", "Datos del usuario no valido"
+                ));
+            }
+            return ResponseEntity.status(HttpStatus.CREATED).body(Map.of(
+                    "status", "succes",
+                    "data", response
+            ));
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(Map.of(
+                    "status", "Error",
+                    "message", "Error al actualizar autor"
+            ));
         }
     }
 

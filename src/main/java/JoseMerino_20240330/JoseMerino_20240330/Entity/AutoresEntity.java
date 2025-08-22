@@ -11,9 +11,10 @@ import java.util.Date;
 public class AutoresEntity {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "seq_Autores")
+    @SequenceGenerator(name = "seq_Autores", sequenceName = "seq_Autores", allocationSize = 1)
     @Column(name = "id")
-    private int id;
+    private Long id;
 
     @Column(name = "nombre")
     private String nombre;
