@@ -6,13 +6,13 @@ import lombok.*;
 import java.util.Date;
 
 @Entity
-@Table(name = "Autores")
+@Table(name = "autores")
 @Getter @Setter @EqualsAndHashCode @ToString
 public class AutoresEntity {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "seq_Autores")
-    @SequenceGenerator(name = "seq_Autores", sequenceName = "seq_Autores", allocationSize = 1)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "seq_autores")
+    @SequenceGenerator(name = "seq_autores", sequenceName = "seq_autores", allocationSize = 1)
     @Column(name = "id")
     private Long id;
 
